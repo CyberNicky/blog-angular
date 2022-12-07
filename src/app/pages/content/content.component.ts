@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {dataFake} from '../../data/dataFake'
 
 @Component({
   selector: 'app-content',
@@ -7,15 +8,29 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent {
-  photoCover: string ='https://cloud.estacaonerd.com/wp-content/uploads/2020/09/21162149/MARVELMCUEXPANDED-768x387-1.jpg'
-  contentTitle: string = 'Notícias'
-  contentDescription: string = 'Olá, mundãooooo!!'
+  photoCover: string =''
+  contentTitle: string = 'Noticias Marvel'
+  contentDescription: string = 'Marvel studios anuncia novo filme de Pantera Negra, e ao final do filmes há duas cenas pós créditos, fiquem ligados!'
+  private id: string | null = '0'
+
   constructor(
     private route:ActivatedRoute
   ){}
   ngOnInit(): void{
     this.route.paramMap.subscribe( value =>
-      console.log(value.get("id"))
+      this.id = value.get("id")
     )
+    this.setValuesToComponent(this.id)
+  }
+  setValuesToComponent(id:string | null){
+    const result = dataFake.filter(article => article.id == id
+      )[0]
+    
+    this.contentTitle = result.title
+    this.contentDescription = result.description
+    this.photoCover = result.photoCover
+
+    
+
   }
 }
